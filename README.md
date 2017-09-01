@@ -10,3 +10,5 @@ github: https://github.com/ponyatov/Ji
 [Java Scripting API](http://docs.oracle.com/javase/6/docs/technotes/guides/scripting/programmer_guide/)
 
 [JSR 223: Scripting for the Java Platform](https://www.jcp.org/en/jsr/detail?id=223)
+
+[Making a simple VM interpreter in Python](https://csl.name/post/vm/)

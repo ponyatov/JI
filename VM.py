@@ -1,3 +1,4 @@
+######## Stack ########
 
 class Stack:
     def __init__(self,init=None):
@@ -14,3 +15,8 @@ class Stack:
 def test_init(): assert Stack([1,2,3]).dat==[1,2,3] 
 def test_push(): s= Stack([1,2,3]) ; s += 4 ; assert s.dat == [1,2,3,4]
 def test_pop(): assert Stack([1,2,3]).pop() == 3
+
+######### Machine ########
+
+class Machine:
+    pass
