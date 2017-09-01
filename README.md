@@ -9,4 +9,4 @@ github: https://github.com/ponyatov/Ji
 
 [Java Scripting API](http://docs.oracle.com/javase/6/docs/technotes/guides/scripting/programmer_guide/)
 
-[JSR 223: Scripting for the JavaTM Platform](https://www.jcp.org/en/jsr/detail?id=223)
+[JSR 223: Scripting for the Java Platform](https://www.jcp.org/en/jsr/detail?id=223)
