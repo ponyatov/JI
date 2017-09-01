@@ -4,8 +4,7 @@ import javax.script.ScriptEngineManager;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		ScriptEngineManager factory = new ScriptEngineManager();
-		ScriptEngine engine = factory.getEngineByName("JavaScript");
+		ScriptEngine engine = (new ScriptEngineManager()).getEngineByName("JavaScript"); // nashorn
 		engine.eval(new FileReader(args[0]));
 	}
 }
