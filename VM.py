@@ -25,8 +25,10 @@ class Machine:
         self.dat = Stack()  # data stack
         self.ret = Stack()  # return stack
         self.code = code    # byte-code
-        self.dispatch = {}  # bc/semantic dispatch
         self.ip = 0         # instruction pointer
+        self.dispatch = {   # bc/semantic dispatch
+            'nop':self.nop
+        }  
     def push(self,o): self.dat.push(o) ; return self
     def pop(self): return self.dat.pop()
     def top(self): return self.dat[-1]
@@ -47,10 +49,12 @@ class Machine:
             elif isinstance(opcode, str): self.push(opcode)     # string
             else: raise RuntimeError(opcode)
         return self
+    # command semantics
+    def nop(self): pass
 
 def test_vm():
     m = Machine([]) ; assert m.code == [] ; assert m.ip == 0
     assert m.dat.dat == [] ; assert m.ret.dat == []
 
-print Machine([1,2,3]).push([1,2,3]).run()
+print Machine(['nop',1,2,3]).push([1,2,3]).run()
 
