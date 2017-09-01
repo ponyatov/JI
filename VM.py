@@ -26,7 +26,31 @@ class Machine:
         self.ret = Stack()  # return stack
         self.code = code    # byte-code
         self.dispatch = {}  # bc/semantic dispatch
+        self.ip = 0         # instruction pointer
+    def push(self,o): self.dat.push(o) ; return self
+    def pop(self): return self.dat.pop()
+    def top(self): return self.dat[-1]
+    def __repr__(self):
+        S = '%s @ %.4X\n\n'%(self.__class__.__name__,self.ip)
+        S += 'dat: %s\n'%self.dat
+        S += 'ret: %s\n'%self.ret
+        S += '\n%s\n\n'%self.code
+        return S
+    def run(self):
+        while self.ip < len(self.code):
+            # fetch command
+            opcode = self.code[self.ip] ; self.ip += 1  # fetch
+            # dispatch command
+            if opcode in self.dispatch: self.dispatch[opcode]() # command
+            elif isinstance(opcode, int): self.push(opcode)     # integer
+            elif isinstance(opcode, float): self.push(opcode)   # float
+            elif isinstance(opcode, str): self.push(opcode)     # string
+            else: raise RuntimeError(opcode)
+        return self
 
 def test_vm():
-    m = Machine([]) ; assert m.code == []
+    m = Machine([]) ; assert m.code == [] ; assert m.ip == 0
     assert m.dat.dat == [] ; assert m.ret.dat == []
+
+print Machine([1,2,3]).push([1,2,3]).run()
+
