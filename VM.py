@@ -21,4 +21,12 @@ def test_top(): assert Stack([1,2,3]).top() == 3
 ######### Machine ########
 
 class Machine:
-    pass
+    def __init__(self, code):
+        self.dat = Stack()  # data stack
+        self.ret = Stack()  # return stack
+        self.code = code    # byte-code
+        self.dispatch = {}  # bc/semantic dispatch
+
+def test_vm():
+    m = Machine([]) ; assert m.code == []
+    assert m.dat.dat == [] ; assert m.ret.dat == []
