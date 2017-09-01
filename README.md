@@ -7,4 +7,6 @@ github: https://github.com/ponyatov/Ji
 
 ### links
 
-[How to build an interpreter in Java, Part 1: The BASICs](https://www.javaworld.com/article/2076921/learn-java/how-to-build-an-interpreter-in-java--part-1--the-basics.html)
+[Java Scripting API](http://docs.oracle.com/javase/6/docs/technotes/guides/scripting/programmer_guide/)
+
+[JSR 223: Scripting for the JavaTM Platform](https://www.jcp.org/en/jsr/detail?id=223)
