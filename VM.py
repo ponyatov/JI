@@ -6,8 +6,11 @@ class Stack:
         else: self.dat=[]
     def push(self,o): self.dat.append(o); return self
     def __iadd__(self,o): return self.push(o)
-    def pop(self): return self.dat.pop()
+    def pop(self):
+        if self.size() > 0: return self.dat.pop()
+        else: raise RuntimeError(self)
     def top(self): return self.dat[-1]
+    def size(self): return len(self.dat)
     def __repr__(self):
         S='[ '
         for i in self.dat: S += '%s '%i
@@ -26,10 +29,12 @@ class Machine:
         self.ret = Stack()  # return stack
         self.code = code    # byte-code
         self.ip = 0         # instruction pointer
+        self.ticks = 0      # block infty loop
         self.dispatch = {   # bc/semantic dispatch
             'nop':  self.nop,
             '+':    self.add,
             '*':    self.mul,
+            'jmp':  self.jmp,
         }  
     def push(self,o): self.dat.push(o) ; return self
     def pop(self): return self.dat.pop()
@@ -43,24 +48,30 @@ class Machine:
     def run(self):
         while self.ip < len(self.code):
             # fetch command
-            opcode = self.code[self.ip] ; self.ip += 1  # fetch
+            opcode = self.code[self.ip] ; self.ip += 1 ; self.ticks +=1
+            if self.ticks > 0x100: raise RuntimeError(self.ticks)
             # dispatch command
             if opcode in self.dispatch: self.dispatch[opcode]() # command
-            elif isinstance(opcode, int): self.push(opcode)     # integer
-            elif isinstance(opcode, float): self.push(opcode)   # float
-            elif isinstance(opcode, str): self.push(opcode)     # string
-            else: raise RuntimeError(opcode)
+            else: self.push(opcode)
         return self
     # command semantics
     def nop(self): pass
-    def add(self): self.push(self.pop() + self.pop())
-    def mul(self): self.push(self.pop() * self.pop())
+    def add(self): last = self.pop() ; self.push(self.pop() + last)
+    def mul(self): last = self.pop() ; self.push(self.pop() * last)
+    def jmp(self):
+        addr = self.pop()
+        if isinstance(addr, int) and 0 <= addr < len(self.code): self.ip = addr
+        else: raise RuntimeError('jmp %s' % addr.__class__) 
 
 def test_vm():
     m = Machine([]) ; assert m.code == [] ; assert m.ip == 0
     assert m.dat.dat == [] ; assert m.ret.dat == []
 def test_addmul():
     assert Machine(['nop',1,2,3,'*','+']).run().pop() == 7
+def test_jmp():
+    try: z = Machine([0, 'jmp']).run()
+    except: z = None
+    assert z == None
 
 print Machine(['nop',1,2,3,'*','+']).push([1,2,3]).run()
 
