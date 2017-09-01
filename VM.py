@@ -27,7 +27,9 @@ class Machine:
         self.code = code    # byte-code
         self.ip = 0         # instruction pointer
         self.dispatch = {   # bc/semantic dispatch
-            'nop':self.nop
+            'nop':  self.nop,
+            '+':    self.add,
+            '*':    self.mul,
         }  
     def push(self,o): self.dat.push(o) ; return self
     def pop(self): return self.dat.pop()
@@ -51,10 +53,14 @@ class Machine:
         return self
     # command semantics
     def nop(self): pass
+    def add(self): self.push(self.pop() + self.pop())
+    def mul(self): self.push(self.pop() * self.pop())
 
 def test_vm():
     m = Machine([]) ; assert m.code == [] ; assert m.ip == 0
     assert m.dat.dat == [] ; assert m.ret.dat == []
+def test_addmul():
+    assert Machine(['nop',1,2,3,'*','+']).run().pop() == 7
 
-print Machine(['nop',1,2,3]).push([1,2,3]).run()
+print Machine(['nop',1,2,3,'*','+']).push([1,2,3]).run()
 
